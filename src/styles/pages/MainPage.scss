@@ -1,0 +1,13 @@
+@use '../reset';
+@use '../variables';
+
+.main-page {
+    background: url('/img/main-bg.jpg') center center no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    color: #fff;
+    font-family: "Montserrat", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
