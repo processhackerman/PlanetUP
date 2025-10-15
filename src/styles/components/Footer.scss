@@ -7,11 +7,14 @@
     border-radius: 25px;
     margin-top: auto;
     padding: 6px;
+    gap: 4px;
 }
 
 .footer-item {
+    padding: 6px;
     width: 24%;
-    height: 66px;
+    height: auto;
+    min-height: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,6 +24,11 @@
     background: rgba(64, 184, 192, 0.28);
     box-shadow: rgba(0, 0, 0, 0.25) 0 0 12px;
     box-shadow: inset 0 0 17px rgba(0, 0, 0, 0.3);
+
+    &__label {
+        font-size: clamp(10px, 3vw, 12px);
+        text-align: center;
+    }
 
     &__icon {
         width: 34px;
