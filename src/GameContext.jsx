@@ -9,8 +9,9 @@ export function GameProvider({ children }) {
     const [currentLevelProgress, setCurrentLevelProgress] = useState(0);
     const [clickPower, setClickPower] = useState(1);
     const [passiveIncome, setPassiveIncome] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const levelLimit = 1000;
+    const levelLimit = 100;
 
     const handlePlanetClick = () => {
         if (energy > 0) {
@@ -26,6 +27,7 @@ export function GameProvider({ children }) {
         currentLevelProgress, setCurrentLevelProgress,
         clickPower, setClickPower,
         passiveIncome, setPassiveIncome,
+        isLoading, setIsLoading,
         levelLimit,
         handlePlanetClick
     };

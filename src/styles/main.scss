@@ -10,3 +10,7 @@ html, body, #root {
 body {
     overflow: hidden;
 }
+
+* {
+    user-select: none;
+}

@@ -13,6 +13,8 @@ function Planet () {
         passiveIncome
     } = useGame();
 
+    const progressPercentage = (currentLevelProgress / levelLimit) * 100;
+
     return (
         <>
             <div className="main-planet">
@@ -40,6 +42,7 @@ function Planet () {
                             muted
                             playsInline
                             preload="auto">
+
                             <source src={EarthAnim} type="video/webm" />
                                 Ваш браузер не поддерживает видео.
                         </video>
@@ -58,7 +61,7 @@ function Planet () {
                         </div>
                     </div>
                     <div className="progress-bar">
-                        <div className="progress-bar-fill"></div>
+                        <div className="progress-bar-fill" style={{width: `${progressPercentage}%`}}></div>
                     </div>
                 </div>
             </div>
