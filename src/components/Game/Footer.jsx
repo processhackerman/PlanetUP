@@ -1,29 +1,58 @@
 import '../../styles/components/Footer.scss'
+import { NavLink } from 'react-router'
 
-function Footer () {
+function Footer() {
     return (
-        <>
-            <footer className='footer'>
-                <div className="footer-item">
-                    <div className="footer-item__icon footer-active"><img src={`${import.meta.env.BASE_URL}icons/planet.png`} alt="" /></div>
-                    <div className="footer-item__label">Главная</div>
+        <footer className='footer'>
+            <NavLink 
+                to="/"
+                className={({ isActive }) => 
+                    `footer-item ${isActive ? 'footer-active' : ''}`
+                }
+            >
+                <div className="footer-item__icon">
+                    <img src={`${import.meta.env.BASE_URL}icons/planet.png`} alt="Главная" />
                 </div>
-                <div className="footer-item">
-                    <div className="footer-item__icon"><img src={`${import.meta.env.BASE_URL}icons/upgrades.png`} alt="" /></div>
-                    <div className="footer-item__label">Магазин</div>
+                <div className="footer-item__label">Главная</div>
+            </NavLink>
+            
+            <NavLink 
+                to="/shop"
+                className={({ isActive }) => 
+                    `footer-item ${isActive ? 'footer-active' : ''}`
+                }
+            >
+                <div className="footer-item__icon">
+                    <img src={`${import.meta.env.BASE_URL}icons/upgrades.png`} alt="Магазин" />
                 </div>
-                <div className="footer-item">
-                    <div className="footer-item__icon"><img src={`${import.meta.env.BASE_URL}icons/games.png`} alt="" /></div>
-                    <div className="footer-item__label">Игры</div>
+                <div className="footer-item__label">Магазин</div>
+            </NavLink>
+            
+            <NavLink 
+                to="/games"
+                className={({ isActive }) => 
+                    `footer-item ${isActive ? 'footer-active' : ''}`
+                }
+            >
+                <div className="footer-item__icon">
+                    <img src={`${import.meta.env.BASE_URL}icons/games.png`} alt="Игры" />
                 </div>
-                <div className="footer-item">
-                    <div className="footer-item__icon"><img src={`${import.meta.env.BASE_URL}icons/friends.png`} alt="" /></div>
-                    <div className="footer-item__label">Друзья</div>
+                <div className="footer-item__label">Игры</div>
+            </NavLink>
+            
+            <NavLink 
+                to="/friends"
+                className={({ isActive }) => 
+                    `footer-item ${isActive ? 'footer-active' : ''}`
+                }
+            >
+                <div className="footer-item__icon">
+                    <img src={`${import.meta.env.BASE_URL}icons/friends.png`} alt="Друзья" />
                 </div>
-            </footer>
-        </>
+                <div className="footer-item__label">Друзья</div>
+            </NavLink>
+        </footer>
     )
 }
 
 export default Footer;
-
