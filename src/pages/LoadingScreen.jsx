@@ -2,11 +2,13 @@ import '../styles/pages/LoadingScreen.scss';
 import logo from '../../public/img/logo.svg';
 import tg_icon from '../../public/icons/telegram-logo.png'
 import EarthAnim from '../assets/videos/earth_60fps_frames.webm'
-import { useGame } from '../GameContext';
+import useGameStore from '../strores/useGameStore';
 
 
 function LoadingScreen() {
-    const {setIsLoading} = useGame();
+    const setIsLoading = useGameStore((s) => s.setIsLoading);
+
+    setTimeout(() => setIsLoading(false), 5000)
 
     return (
         <div className="loading-screen">
@@ -28,7 +30,7 @@ function LoadingScreen() {
                 </div>
             </div>
             <div className="loading-content">
-                <div className="earth">
+                {/* <div className="earth">
                     <video
                         autoPlay
                         loop
@@ -40,7 +42,7 @@ function LoadingScreen() {
                         <source src={EarthAnim} type="video/webm" />
                             Ваш браузер не поддерживает видео.
                     </video>
-                </div>
+                </div> */}
             </div>
         </div>
     )

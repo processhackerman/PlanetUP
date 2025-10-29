@@ -1,13 +1,14 @@
 import '../../styles/components/MainHeader.scss'
+import useGameStore from '../../strores/useGameStore';
 
 function Header () {
-    let level = 1;
+    const currentLevel = useGameStore(s => s.currentLevel)
 
     return(
         <>
             <header className="main-header">
                 <div className="info">
-                    <span className="info__level">Уровень: {level}</span>
+                    <span className="info__level">Уровень: {currentLevel}</span>
                     <span className="info__planets"><img src={`${import.meta.env.BASE_URL}icons/info.png`} alt="" /></span>
                 </div>
                 <div className="settings">

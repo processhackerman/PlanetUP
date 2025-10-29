@@ -1,17 +1,13 @@
-import { useGame } from '../../GameContext';
+import useGameStore from '../../strores/useGameStore';
 import EarthAnim from '../../assets/videos/earth_60fps_frames.webm'
 import '../../styles/components/Planet.scss'
 
 function Planet () {
-    const {
-        balance,
-        energy,
-        currentLevelProgress,
-        levelLimit,
-        handlePlanetClick,
-        clickPower,
-        passiveIncome
-    } = useGame();
+    const {balance, energy, currentLevelProgress} = useGameStore();
+    const levelLimit = useGameStore(s => s.levelLimit);
+    const handlePlanetClick = useGameStore(s => s.handlePlanetClick);
+    const clickPower = useGameStore(s => s.clickPower);
+    const passiveIncome = useGameStore(s => s.passiveIncome);
 
     const progressPercentage = (currentLevelProgress / levelLimit) * 100;
 

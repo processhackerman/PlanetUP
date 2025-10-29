@@ -2,12 +2,12 @@ import MainPage from "./pages/MainPage"
 import ShopPage from "./pages/ShopPage";
 import FriendsPage from "./pages/FriendsPage";
 import GamesPage from "./pages/GamesPage";
-import { useGame } from "./GameContext";
+import useGameStore from "./strores/useGameStore";
 import LoadingScreen from "./pages/LoadingScreen";
 import { Route, Routes } from "react-router";
 
 function App() {
-  const {isLoading} = useGame();
+  const isLoading = useGameStore((s) => s.isLoading);
 
   return (
         <div className="main-page">
