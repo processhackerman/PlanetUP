@@ -8,7 +8,8 @@ const useGameStore = create((set, get) => ({
     passiveIncome: 0,
     isLoading: true,
     currentLevel: 1,
-    levelLimit: 100,
+
+    upgradesLevels: {},
 
     setBalance: (value) => set({balance: value}),
     setEnergy: (value) => set({energy: value}),
@@ -18,8 +19,15 @@ const useGameStore = create((set, get) => ({
     setIsLoading: (value) => set({isLoading: value}),
     setCurrentLevel: (value) => set({currentLevel: value}),
 
+    getRequiredClicksForLevel: (level = null) => {
+        const lvl = level ?? get().currentLevel;
+        return Math.ceil(100 * Math.pow(1.4, lvl - 1))
+    },
+
     handlePlanetClick: () => {
         const {energy, clickPower} = get();
+
+        if (energy <= 0) return;
 
         if (energy > 0) {
             set((state) => ({
@@ -27,6 +35,16 @@ const useGameStore = create((set, get) => ({
                 energy: state.energy - 1,
                 currentLevelProgress: state.currentLevelProgress + 1
             }))
+        }
+
+        const { currentLevelProgress: newProgress, currentLevel: lvlNow } = get();
+        const requiredClicks = get().getRequiredClicksForLevel(lvlNow);
+
+        if (newProgress >= requiredClicks) {
+            set((state) => ({
+                currentLevel: state.currentLevel + 1,
+                currentLevelProgress: 0
+            }));
         }
     },
 }));
