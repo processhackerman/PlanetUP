@@ -1,6 +1,6 @@
 const MaxLevel = 10;
 
-export const upgrades = {
+const upgrades = {
     click: [
         {
             id: "click_1",
@@ -48,9 +48,9 @@ export const upgrades = {
             maxLevel: MaxLevel,
         },
     ],
-    income: [
+    passive: [
         {
-            id: "income_1",
+            id: "passive_1",
             name: "ОРБИТАЛЬНЫЙ СПЕКТРОМЕТР",
             basePrice: 100,
             basePower: 10,
@@ -59,7 +59,7 @@ export const upgrades = {
             maxLevel: MaxLevel,
         },
         {
-            id: "income_2",
+            id: "passive_2",
             name: "МАГНИТОСФЕРНЫЙ КОЛЛЕКТОР",
             basePrice: 300,
             basePower: 25,
@@ -68,7 +68,7 @@ export const upgrades = {
             maxLevel: MaxLevel,
         },
         {
-            id: "income_3",
+            id: "passive_3",
             name: "РЕЛЯТИВИСТСКИЙ ГЕНЕРАТОР",
             basePrice: 900,
             basePower: 75,
@@ -77,7 +77,7 @@ export const upgrades = {
             maxLevel: MaxLevel,
         },
         {
-            id: "income_4",
+            id: "passive_4",
             name: "СИНГУЛЯРНОЕ ИЗЛУЧЕНИЕ",
             basePrice: 2700,
             basePower: 225,
@@ -86,7 +86,7 @@ export const upgrades = {
             maxLevel: MaxLevel,
         },
         {
-            id: "income_5",
+            id: "passive_5",
             name: "ХАОТИЧЕСКИЙ РЕЗОНАТОР",
             basePrice: 8100,
             basePower: 675,
@@ -216,3 +216,5 @@ export const upgrades = {
         },
     ],
 }
+
+export default upgrades;

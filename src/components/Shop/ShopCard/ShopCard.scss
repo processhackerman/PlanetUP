@@ -1,0 +1,184 @@
+.card {
+    background: linear-gradient(90deg, rgba(64, 184, 192, 0.3), rgba(30, 86, 90, 0.3));
+    backdrop-filter: blur(0.1rem);
+    -webkit-backdrop-filter: blur(0.1rem);
+    box-shadow: rgba(0, 0, 0, 0.3) 0 0 0.7rem, inset rgba(0, 0, 0, 0.5) 0 0 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding: 3px;
+    padding-right: 0;
+    border-radius: 1.1rem;
+    gap: 7px;
+
+    .card-divider {
+        width: 1px;
+        height: 0.7rem;
+        background: #fff;
+    }
+
+    .card-button {
+        background: linear-gradient(90deg, #008998, #68437D);
+        border-radius: 0.7rem;
+        height: 100%;
+        display: block;
+        padding: 0.5rem 0.8rem;
+        margin-right: 0.4rem;
+        margin-left: auto;
+        color: #fff;
+        border: none;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .card-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        img {
+            width: 100%;height: 100%;
+            object-fit: contain;
+            border-radius: 0.9rem;
+        }
+    }
+
+    .card-body {
+        font-size: 0.6rem;
+        display: grid;
+        grid-template-columns: auto 1px auto 1px auto;
+        grid-template-rows: auto auto;
+        row-gap: 3px;
+        column-gap: 0.22rem;
+        align-items: center;
+        justify-items: center;
+
+        &__title {
+            grid-area: 1 / 1 / 1 / 5;
+            justify-self: start;
+            font-weight: 600;
+            font-size: 0.62rem;
+        }
+
+        &__power {
+            grid-area: 2 / 1 / 2 / 1;
+            display: flex;
+            align-items: center;
+            gap: 1px;
+
+            &-icon {
+                width: 0.75rem;
+                height: 0.75rem;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+            }
+
+            & + .card-divider {
+                grid-area: 2 / 2 / 2 / 2;
+            }
+        }
+
+        &__required {
+            grid-area: 2 / 3 / 2 / 3;
+            white-space: nowrap;
+            font-weight: 600;
+            color: #00C395;
+
+            & + .card-divider {
+                grid-area: 2 / 4 / 2 / 4 ;
+            }
+        }
+
+        &__price {
+            grid-area: 2 / 5 / 2 / 5;
+            display: flex;
+            align-items: center;
+            gap: 1px;
+
+            &-icon {
+                width: 0.75rem;
+                height: 0.75rem;
+                
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+            }
+        }
+
+        &__progress {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.24rem;
+            grid-area: 2 / 3 / 2 / 3;
+
+            &-level {
+                white-space: nowrap;
+                font-size: 0.6rem;
+            }
+
+            &-bar {
+                width: clamp(2.3rem, 1vw, 2.8rem);
+                height: 4px;
+                background: #d9d9d9;
+                border-radius: 2px;
+                overflow: hidden;
+            }
+
+            &-value {
+                height: 100%;
+                border-radius: 2px;
+                background: linear-gradient(90deg, #232340, #005757);
+            }
+
+            & + .card-divider {
+                grid-area: 2 / 4 / 2 / 4 ;
+            }
+        }
+    }
+}
+
+.card.card-locked {
+    background: linear-gradient(90deg, rgba(166, 166, 166, 0.3), rgba(136, 136, 136, 0.3));
+    backdrop-filter: blur(9.6px);
+    padding: 0.4rem;
+    -webkit-backdrop-filter: blur(9.6px);
+
+    .card-icon {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .card-body {
+
+
+        &__required {
+            color: #fff;
+            font-weight: 400;
+            font-size: 0.9em;
+        }
+    }
+
+    .card-button.disabled {
+        background: rgba(170, 170, 170, 0.28);
+        margin-right: 0;
+
+    }
+}
+
+.card.card-upgradeable {
+    button {
+        font-size: 0.7rem;
+        background: linear-gradient(90deg, #007D7D, #003E45);
+    }
+}
+
+.card.card-max {
+    button {
+        background: rgba(0, 0, 0, 0.3);
+        box-shadow: rgba(0, 0, 0, 0.25) 0 0 1rem;
+    }
+}

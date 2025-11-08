@@ -11,6 +11,6 @@ body {
     overflow: hidden;
 }
 
-* {
+*, *::before, *::after {
     user-select: none;
 }

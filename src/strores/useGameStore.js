@@ -1,7 +1,9 @@
 import { create } from "zustand";
+import upgrades from "../data/upgrades";
+import { getUpgradeCost, getUpgradePower } from "../utils/upgradeMath";
 
 const useGameStore = create((set, get) => ({
-    balance: 0,
+    balance: 30,
     energy: 500,
     currentLevelProgress: 0,
     clickPower: 1,
@@ -21,7 +23,7 @@ const useGameStore = create((set, get) => ({
 
     getRequiredClicksForLevel: (level = null) => {
         const lvl = level ?? get().currentLevel;
-        return Math.ceil(100 * Math.pow(1.4, lvl - 1))
+        return Math.ceil(400 * Math.pow(1.5, lvl - 1))
     },
 
     handlePlanetClick: () => {
@@ -47,6 +49,35 @@ const useGameStore = create((set, get) => ({
             }));
         }
     },
+
+    buyUpgrade: (category, id) => {
+        const {currentLevel, balance, upgradesLevels} = get();
+        const upgrade = upgrades[category].find((item) => item.id === id);
+        if (!upgrade) return;
+
+        const currentUpgradeLevel = upgradesLevels[id] || 0;
+        if (currentUpgradeLevel >= upgrade.maxLevel) return;
+        if (currentLevel < upgrade.unlockLevel) return;
+
+        const cost = getUpgradeCost(upgrade.basePrice, currentUpgradeLevel);
+        if (balance < cost) return;
+
+        const newLevel = currentUpgradeLevel + 1;
+        const newUpgrades = {
+            ...upgradesLevels,
+            [id]: newLevel,
+        }
+
+        const newPower = getUpgradePower(upgrade.basePower, newLevel, upgrade.type);
+
+        set({
+            balance: balance - cost,
+            upgradesLevels: newUpgrades,
+        });
+
+        if (category === "click") set((state) => ({clickPower: state.clickPower + newPower}));
+        else if (category === "income") set({passiveIncome: newPower});
+    }
 }));
 
 export default useGameStore;
