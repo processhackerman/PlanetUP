@@ -40,11 +40,11 @@ export default function UpgradeCard({ status, icon, name, type, income, required
 
                 {status !== "locked" ? (<div className="card-divider"></div>) : ""}
 
-                {status === "available" || status === "locked" ? (
+                {status === "locked" ? (
                     <div className="card-body__required">
                         Требуется: Уровень {requiredLevel}
                     </div>
-                ) : (
+                ) : status === "upgradeable" ? (
                     <div className="card-body__progress">
                         <div className="card-body__progress-level">Ур. {level}</div>
                         <div className="card-body__progress-bar">
@@ -52,12 +52,14 @@ export default function UpgradeCard({ status, icon, name, type, income, required
                         </div>
                         <div className="card-body__progress-percentage">{progress}%</div>
                     </div>
-                )}
+                ) : ""}
 
 
                 {status !== "locked" && status !== "max" ? (
                     <>
-                        <div className="card-divider"></div>
+                        {status !== "available" ? (
+                            <div className="card-divider"></div>
+                        ) : ""}
                         <div className="card-body__price">{price} <div className="card-body__price-icon"><img src={coin} alt="" /></div></div>
                     </>
                 ) : ""}
