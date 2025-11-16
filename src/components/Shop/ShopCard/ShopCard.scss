@@ -59,7 +59,7 @@
             white-space: nowrap;
         }
 
-        &__power {
+        &__advantage {
             grid-area: 2 / 1 / 2 / 1;
             display: flex;
             align-items: center;
@@ -156,8 +156,8 @@
     -webkit-backdrop-filter: blur(9.6px);
 
     .card-icon {
-        width: 2rem;
-        height: 2rem;
+        width: 10vw;
+        height: 10vw;
     }
 
     .card-body {
@@ -166,22 +166,21 @@
         &__required {
             color: #fff;
             font-weight: 400;
-            font-size: 0.9em;
+            font-size: 0.85em;
         }
     }
 
     .card-button.disabled {
         background: rgba(170, 170, 170, 0.28);
         margin-right: 0;
-
+        font-size: 0.65rem;
     }
 }
 
-.card.card-upgradeable {
-    button {
-        font-size: clamp(0.4rem, 4vw, 0.7rem);
-        background: linear-gradient(90deg, #007D7D, #003E45);
-    }
+
+.card-button.upgrades {
+    font-size: clamp(0.4rem, 4vw, 0.7rem);
+    background: linear-gradient(90deg, #007D7D, #003E45);
 }
 
 .card.card-max {
@@ -200,5 +199,41 @@
 
     .card-body__price {
         grid-area: 2 / 3 / 2 / 3;
+    }
+}
+
+.card.card-boost {
+    .card-body {
+        grid-template-columns: 1fr 1px auto 1px auto;
+        justify-items: start;
+        justify-content: start;
+
+        &__title {
+            grid-area: 1 / 1 / 1 / 5;
+        }
+
+        &__advantage {
+            grid-area: 2 / 1 / 2 / 1;
+            font-size: clamp(0.3rem, 2.2vw, 0.7rem);
+
+            &+.card-divider {
+                grid-area: 2 / 2 / 2 / 2;
+            }
+        }
+
+        &__price {
+            font-size: clamp(0.3rem, 2.3vw, 0.7rem);
+            grid-area: 2 / 3 / 2 / 3;
+
+            &+.card-divider {
+                grid-area: 2 / 4 / 2 / 4;
+            }
+        }
+
+        &__duration {
+            grid-area: 2 / 5 / 2 / 5;
+            white-space: nowrap;
+            font-size: clamp(0.3rem, 2.2vw, 0.7rem);
+        }
     }
 }

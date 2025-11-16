@@ -19,13 +19,16 @@ export default function ShopTab({ category }) {
                 const currentCardLevel = levels[item.id] || 0;
                 let status = "";
                 
+                const cardPrice = item.basePrice;
 
                 if (currentCardLevel >= item.maxLevel) status = "max";
                 else if (playerLevel < item.unlockLevel) status = "locked";
                 else if (currentCardLevel === 0) status = "available";
                 else status = "upgradeable";
 
-                const cardPrice = getUpgradeCost(item.basePrice, currentCardLevel)
+                if (item.category === "click" || item.category === "passive") {
+                    cardPrice = getUpgradeCost(item.basePrice, currentCardLevel)
+                }
                 const cardPower = Math.max(getUpgradePower(item.basePower, currentCardLevel, item.type), item.basePower) 
 
                 return(
@@ -41,6 +44,8 @@ export default function ShopTab({ category }) {
                         level={currentCardLevel}
                         category={category}
                         id={item.id}
+                        description={item.description}
+                        duration={item.duration}
                     />
                 )
             })}

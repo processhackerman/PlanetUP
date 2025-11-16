@@ -27,13 +27,13 @@ export default function UpgradeCard({ status, icon, name, type, income, required
                 <div className="card-body__title">{name}</div>
 
                 {type === "additive" ? (
-                    <div className="card-body__power">
+                    <div className="card-body__advantage">
                         +{income}
-                        <div className="card-body__power-icon"><img src={coin} alt="" /></div>
+                        <div className="card-body__advantage-icon"><img src={coin} alt="" /></div>
                         {category === "click" ? " / клик" : " / час"}
                     </div>
                 ) : (
-                    <div className="card-body__power">
+                    <div className="card-body__advantage">
                         x{income} ко всему
                     </div>
                 )}

@@ -3,15 +3,24 @@ import upgrades from "../data/upgrades";
 import { getUpgradeCost, getUpgradePower } from "../utils/upgradeMath";
 
 const useGameStore = create((set, get) => ({
-    balance: 30,
+    balance: 300,
     energy: 500,
     currentLevelProgress: 0,
     clickPower: 1,
     passiveIncome: 0,
     isLoading: true,
     currentLevel: 1,
+    incomeMultiplier: 1,
+    critBoostActive: false,
 
     upgradesLevels: {},
+
+    boostsState: {
+        boost_1: { active: false, remaining: 0, cooldown: 0 },
+        boost_2: { active: false, remaining: 0, cooldown: 0 },
+        boost_3: { active: false, remaining: 0, cooldown: 0 },
+    },
+
 
     setBalance: (value) => set({balance: value}),
     setEnergy: (value) => set({energy: value}),
@@ -27,13 +36,19 @@ const useGameStore = create((set, get) => ({
     },
 
     handlePlanetClick: () => {
-        const {energy, clickPower} = get();
+        const {energy, clickPower, critBoostActive} = get();
+ф
+        let income = clickPower;
 
         if (energy <= 0) return;
 
+        if (critBoostActive) {
+            if (Math.random() < 0.1) income *= 10;
+        }
+
         if (energy > 0) {
             set((state) => ({
-                balance: state.balance + clickPower,
+                balance: state.balance + income,
                 energy: state.energy - 1,
                 currentLevelProgress: state.currentLevelProgress + 1
             }))
@@ -77,7 +92,129 @@ const useGameStore = create((set, get) => ({
 
         if (category === "click") set((state) => ({clickPower: state.clickPower + newPower}));
         else if (category === "income") set({passiveIncome: newPower});
-    }
+    },
+
+    buyBoost: (boostId) => {
+        const boosts = get().boostsState;
+        const boost = boosts[boostId];
+        const index = boostId.toString().slice(-1)-1;
+        const boostData = upgrades["boost"][index];
+
+        
+
+        const balance = get().balance;
+
+        if (boost.cooldown > 0) return;
+        if (boost.active) return;
+        if (balance < boostData.basePrice) return;
+
+        set({ balance: balance - boostData.basePrice })
+
+        set((state) => ({
+            boostsState: {
+                ...state.boostsState,
+                [boostId]: {
+                    active: true,
+                    remaining: boostData.duration,
+                    cooldown: boostData.reload
+                }
+            }
+        }));
+
+        get().activateBoostEffect(boostId);
+        get().startBoostTimers(boostId);
+    },
+
+    activateBoostEffect: (boostId) => {
+        if (boostId === "boost_1") {
+            set((s) => ({ incomeMultiplier: s.incomeMultiplier * 2 }));
+        }
+
+        else if (boostId === "boost_2") {
+            const interval = setInterval(() => {
+                if (!get().boostsState[boostId].active) return;
+                get().handlePlanetClick();
+            }, 100)
+        }
+
+        if (boostId === "boost_3") {
+            set({critBoostActive: true})
+        }
+    },
+
+    startBoostTimers: (id) => {
+        const tick = setInterval(() => {
+            set((state) => {
+                const b = state.boostsState[id]
+
+                if (b.remaining <= 1) {
+                    clearInterval(tick);
+                    get().endBoostEffects(id);
+
+                    return {
+                        boostsState: {
+                            ...state.boostsState,
+                            [id]: {
+                                ...b,
+                                active: false
+                            }
+                        }
+                        
+                    }
+                }
+
+                return {
+                    boostsState: {
+                        ...state.boostsState,
+                        [id]: {
+                            ...b,
+                            remaining: b.remaining - 1
+                        }
+                    }
+                }
+            })
+        }, 1000);
+
+        const cooldown = setInterval(() => {
+            set((state) => {
+                const b = state.boostsState[id];
+
+                if (b.cooldown <= 1) {
+                    clearInterval(cooldown)
+                    return {
+                        boostsState: {
+                            ...state.boostsState,
+                            [id]: {
+                                ...b,
+                                cooldown: 0
+                            }
+                        }
+                    }
+                }
+
+                return {
+                    boostsState: {
+                        ...state.boostsState,
+                        [id]: {
+                            ...b,
+                            cooldown: b.cooldown - 1
+                        }
+                    }
+                }
+            })
+        }, 1000)
+    },
+
+    endBoostEffects: (id) => {
+        if (id === "boost_1") {
+            set((s) => ({ incomeMultiplier: s.incomeMultiplier / 2 }));
+        }
+
+        if (id === "boost_3") {
+            set({ critBoostActive: false });
+        }
+    },
+
 }));
 
 export default useGameStore;
