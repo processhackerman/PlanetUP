@@ -36,9 +36,9 @@ const useGameStore = create((set, get) => ({
     },
 
     handlePlanetClick: () => {
-        const {energy, clickPower, critBoostActive} = get();
+        const {energy, clickPower, critBoostActive, incomeMultiplier} = get();
 
-        let income = clickPower;
+        let income = clickPower * incomeMultiplier;
 
         if (energy <= 0) return;
 

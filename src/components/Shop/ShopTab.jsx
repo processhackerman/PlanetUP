@@ -3,6 +3,7 @@ import upgrades from '../../data/upgrades'
 import {getUpgradeCost, getUpgradePower} from '../../utils/upgradeMath'
 import ShopCard from "./ShopCard/ShopCard"
 import '../../styles/components/ShopTab.scss'
+import { useState } from "react"
 
 export default function ShopTab({ category }) {
     const url = import.meta.env.BASE_URL;
@@ -18,18 +19,15 @@ export default function ShopTab({ category }) {
             {list.map((item) => {
                 const currentCardLevel = levels[item.id] || 0;
                 let status = "";
-                
-                const cardPrice = item.basePrice;
 
                 if (currentCardLevel >= item.maxLevel) status = "max";
                 else if (playerLevel < item.unlockLevel) status = "locked";
                 else if (currentCardLevel === 0) status = "available";
                 else status = "upgradeable";
 
-                if (item.category === "click" || item.category === "passive") {
-                    cardPrice = getUpgradeCost(item.basePrice, currentCardLevel)
-                }
-                const cardPower = Math.max(getUpgradePower(item.basePower, currentCardLevel, item.type), item.basePower) 
+
+                const cardPrice = (category !== "boost" && item.category !== "skin") ? getUpgradeCost(item.basePrice, currentCardLevel) : item.basePrice
+                const cardPower = (category !== "click") ? Math.max(getUpgradePower(item.basePower, currentCardLevel, item.type), item.basePower) : currentCardLevel
 
                 return(
                     <ShopCard
