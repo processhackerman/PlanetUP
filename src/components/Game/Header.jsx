@@ -1,22 +1,21 @@
-import '../../styles/components/MainHeader.scss'
-import useGameStore from '../../strores/useGameStore';
+import "../../styles/components/MainHeader.scss";
+import useGameStore from "../../strores/useGameStore";
 
-function Header () {
-    const currentLevel = useGameStore(s => s.currentLevel)
+function Header() {
+  const currentLevel = useGameStore((s) => s.currentLevel);
 
-    return(
-        <>
-            <header className="main-header">
-                <div className="info">
-                    <span className="info__level">Уровень: {currentLevel}</span>
-                    <span className="info__planets"><img src={`${import.meta.env.BASE_URL}icons/info.png`} alt="" /></span>
-                </div>
-                <div className="settings">
-                    <button type="button" className="settings-button"><img src={`${import.meta.env.BASE_URL}icons/settings.png`} alt="" /></button>
-                </div>
-            </header>
-        </>
-    )
+  return (
+    <>
+      <header className="main-header">
+        <div className="info">
+          <span className="info__level">Current level: {currentLevel}</span>
+          <span className="info__planets">
+            <img src={`${import.meta.env.BASE_URL}icons/info.png`} alt="" />
+          </span>
+        </div>
+      </header>
+    </>
+  );
 }
 
 export default Header;
