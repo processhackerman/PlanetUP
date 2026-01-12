@@ -6,7 +6,7 @@ const useGameStore = create((set, get) => {
   if (typeof window !== "undefined") {
     setInterval(() => {
       get().restoreEnergy();
-    }, 3000);
+    }, 1300);
   }
 
   return {
@@ -20,6 +20,8 @@ const useGameStore = create((set, get) => {
     currentLevel: 1,
     incomeMultiplier: 1,
     critBoostActive: false,
+    currentSkinId: "skin_1",
+    ownedSkins: ["skin_1"],
 
     upgradesLevels: {},
 
@@ -57,7 +59,7 @@ const useGameStore = create((set, get) => {
         set((state) => ({
           balance: state.balance + income,
           energy: state.energy - 1,
-          currentLevelProgress: state.currentLevelProgress + 1,
+          currentLevelProgress: state.currentLevelProgress + income,
         }));
       }
 
@@ -228,6 +230,23 @@ const useGameStore = create((set, get) => {
       set((state) => {
         if (state.energy >= state.maxEnergy) return {};
         return { energy: state.energy + 1 };
+      });
+    },
+
+    buySkin: (skinId) => {
+      const { balance, ownedSkins } = get();
+      if (ownedSkins.includes(skinId)) {
+        set({ currentSkinId: skinId });
+        return;
+      }
+
+      const skin = upgrades.skin.find((s) => s.id === skinId);
+      if (!skin || balance < skin.price) return;
+
+      set({
+        balance: balance - skin.price,
+        ownedSkins: [...ownedSkins, skinId],
+        currentSkinId: skinId,
       });
     },
   };

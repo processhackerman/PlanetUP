@@ -108,10 +108,17 @@
   margin-top: 30px;
 
   video {
-    width: min (288px, 75vw);
+    width: min(288px, 75vw);
     height: auto;
     max-height: 40vh;
     pointer-events: none;
+  }
+
+  img {
+    width: 100vw;
+    height: auto;
+    max-height: 40vh;
+    object-fit: contain;
   }
 }
 

@@ -10,31 +10,53 @@ export default function ShopTab({ category }) {
 
   const levels = useGameStore((s) => s.upgradesLevels);
   const playerLevel = useGameStore((s) => s.currentLevel);
+  const balance = useGameStore((s) => s.balance);
+
+  console.log(list);
 
   // логика "как будет выглядеть карточка"
 
   return (
     <div className="shop-tab">
       {list.map((item) => {
+        if (category == "skin") {
+          const locked = balance < item.price;
+
+          return (
+            <ShopCard
+              key={item.id}
+              category="skin"
+              status={locked ? "locked" : "available"}
+              icon={`${url}icons/skin/${item.id}.png`}
+              name={item.name}
+              description={item.desc}
+              price={item.price}
+              unlockLevel={item.unlockLevel}
+              skinType={item.type}
+              id={item.id}
+            />
+          );
+        }
+
         const currentCardLevel = levels[item.id] || 0;
-        let status = "";
+        let status = "available";
 
         if (currentCardLevel >= item.maxLevel) status = "max";
         else if (playerLevel < item.unlockLevel) status = "locked";
-        else if (currentCardLevel === 0) status = "available";
         else status = "upgradeable";
 
         const cardPrice =
-          category !== "boost" && item.category !== "skin"
+          category !== "boost"
             ? getUpgradeCost(item.basePrice, currentCardLevel)
             : item.basePrice;
+
         const cardPower =
           category !== "click"
             ? Math.max(
                 getUpgradePower(item.basePower, currentCardLevel, item.type),
                 item.basePower
               )
-            : currentCardLevel;
+            : currentCardLevel + 1;
 
         return (
           <ShopCard
@@ -54,6 +76,15 @@ export default function ShopTab({ category }) {
           />
         );
       })}
+
+      {category === "skin" ? (
+        <div className="info">
+          All skins are currently in their static, non-animated state. Dynamic,
+          animated versions are scheduled for future content updates.
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

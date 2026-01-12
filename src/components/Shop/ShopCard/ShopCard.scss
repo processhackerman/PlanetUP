@@ -37,15 +37,25 @@
     right: 5px;
     top: 5px;
     bottom: 5px;
+
+    &.active {
+      background: rgba(0, 0, 0, 0.3);
+      box-shadow: rgba(0, 0, 0, 0.25) 0 0 1rem;
+    }
+
+    &.select {
+      background: linear-gradient(90deg, #007d7d, #003e45);
+    }
   }
 
   .card-icon {
-    width: 2.5rem;
     height: 2.5rem;
+    width: 2.5rem;
+
     img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       border-radius: 0.9rem;
     }
   }
@@ -58,7 +68,7 @@
     row-gap: 3px;
     column-gap: 0.27rem;
     align-items: center;
-    justify-items: center;
+    justify-items: start;
     align-self: center;
 
     &__title {
@@ -244,4 +254,29 @@
       font-size: clamp(0.3rem, 2.2vw, 0.7rem);
     }
   }
+}
+
+.card.card-locked.skin-card {
+  padding: 3px;
+
+  .card-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .card-button {
+    font-size: 0.8rem;
+  }
+}
+
+.card.skin-card {
+  .card-body__price {
+    grid-area: 2 / 1 / 3 / 6;
+  }
+}
+
+.info {
+  font-size: 0.8rem;
+  margin-top: 1rem;
+  text-align: center;
 }

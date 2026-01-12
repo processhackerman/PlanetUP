@@ -1,7 +1,6 @@
 import "../styles/pages/LoadingScreen.scss";
 import logo from "../../public/img/logo.svg";
 import tg_icon from "../../public/icons/telegram-logo.png";
-import EarthAnim from "../assets/videos/earth_60fps_frames.webm";
 import useGameStore from "../strores/useGameStore";
 
 function LoadingScreen() {

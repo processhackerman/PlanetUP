@@ -1,8 +1,8 @@
 import useGameStore from "../../strores/useGameStore";
 import { useState } from "react";
-import EarthAnim from "../../assets/videos/earth_60fps_frames.webm";
 import "../../styles/components/Planet.scss";
 import { motion, useAnimation, AnimatePresence } from "motion/react";
+import upgrades from "../../data/upgrades";
 
 function Planet() {
   const { balance, energy, currentLevelProgress, getRequiredClicksForLevel } =
@@ -12,6 +12,9 @@ function Planet() {
   const handlePlanetClick = useGameStore((s) => s.handlePlanetClick);
   const clickPower = useGameStore((s) => s.clickPower);
   const passiveIncome = useGameStore((s) => s.passiveIncome);
+  const incomeMultiplier = useGameStore((s) => s.incomeMultiplier);
+  const currentSkinId = useGameStore((s) => s.currentSkinId);
+  const skin = upgrades.skin.find((s) => s.id === currentSkinId);
 
   const [hits, setHits] = useState([]);
 
@@ -33,7 +36,7 @@ function Planet() {
         id: crypto.randomUUID(),
         x,
         y,
-        value: clickPower,
+        value: clickPower * incomeMultiplier,
       },
     ]);
 
@@ -79,11 +82,22 @@ function Planet() {
             onPointerDown={handleClick}
             animate={controls}
           >
-            <video autoPlay loop muted playsInline preload="auto">
-              <source src={EarthAnim} type="video/webm" />
-              Your browser doesn't support videos.
-            </video>
+            {skin.type === "video" ? (
+              <video autoPlay loop muted playsInline preload="auto">
+                <source
+                  src={`${import.meta.env.BASE_URL}${skin.video}`}
+                  type="video/webm"
+                />
+              </video>
+            ) : (
+              <img
+                src={`${import.meta.env.BASE_URL}${skin.image}`}
+                alt={skin.name}
+                draggable={false}
+              />
+            )}
           </motion.div>
+
           <div className="hits-layer">
             <AnimatePresence>
               {hits.map((hit) => (
