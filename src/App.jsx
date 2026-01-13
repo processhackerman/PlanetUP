@@ -22,6 +22,18 @@ function App() {
     store.applyOfflineIncome(); // AFK доход
     store.startPassiveIncome(); // онлайн доход
 
+    if (window.Telegram?.WebApp) {
+      const tg = window.Telegram.WebApp;
+
+      tg.ready();
+      tg.expand();
+      tg.setHeaderColor("#000000");
+      tg.setBackgroundColor("#000000");
+
+      tg.enableClosingConfirmation();
+      tg.setHeaderVisibility(false);
+    }
+
     setInterval(() => {
       store.restoreEnergy();
     }, 1300);
