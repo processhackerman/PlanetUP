@@ -21,6 +21,7 @@
   &-hour {
     background: linear-gradient(90deg, #202041, #7816ce);
     box-shadow: #481084 0 0 12px;
+    white-space: nowrap;
   }
 
   &__item {

@@ -45,6 +45,13 @@ function Planet() {
     await controls.start({ scale: 1, transition: { duration: 0.09 } });
   };
 
+  const formatText = (text) => {
+    if (text >= 1000000) {
+      return text / 100000, "mil";
+    } else if (text >= 1000) return text / 1000 + "k";
+    else return text;
+  };
+
   return (
     <>
       <div className="main-planet">
@@ -56,7 +63,7 @@ function Planet() {
                 alt=""
               />
             </div>
-            <div className="income__item-value">{clickPower}</div>
+            <div className="income__item-value">{formatText(clickPower)}</div>
             <div className="income__item-label">Income / click</div>
           </div>
           <div className="income__item income-hour">
@@ -66,7 +73,9 @@ function Planet() {
                 alt=""
               />
             </div>
-            <div className="income__item-value">{passiveIncome}</div>
+            <div className="income__item-value">
+              {formatText(passiveIncome)}
+            </div>
             <div className="income__item-label">Income / hour</div>
           </div>
         </div>

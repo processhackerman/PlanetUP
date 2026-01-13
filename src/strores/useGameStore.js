@@ -3,25 +3,21 @@ import upgrades from "../data/upgrades";
 import { getUpgradeCost, getUpgradePower } from "../utils/upgradeMath";
 
 const useGameStore = create((set, get) => {
-  if (typeof window !== "undefined") {
-    setInterval(() => {
-      get().restoreEnergy();
-    }, 1300);
-  }
-
   return {
-    balance: 0,
+    balance: 250,
     energy: 500,
     maxEnergy: 500,
     currentLevelProgress: 0,
     clickPower: 1,
-    passiveIncome: 0,
+    passiveIncome: 1000,
     isLoading: true,
-    currentLevel: 1,
+    currentLevel: 3,
     incomeMultiplier: 1,
     critBoostActive: false,
     currentSkinId: "skin_1",
     ownedSkins: ["skin_1"],
+    passiveInterval: null,
+    lastActiveAt: Date.now(),
 
     upgradesLevels: {},
 
@@ -107,7 +103,7 @@ const useGameStore = create((set, get) => {
 
       if (category === "click")
         set((state) => ({ clickPower: state.clickPower + newPower }));
-      else if (category === "income") set({ passiveIncome: newPower });
+      else if (category === "passive") set({ passiveIncome: newPower });
     },
 
     buyBoost: (boostId) => {
@@ -248,6 +244,118 @@ const useGameStore = create((set, get) => {
         ownedSkins: [...ownedSkins, skinId],
         currentSkinId: skinId,
       });
+    },
+
+    startPassiveIncome: () => {
+      const { passiveInterval } = get();
+      if (passiveInterval) return;
+
+      const interval = setInterval(() => {
+        const income = Math.ceil(get().passiveIncome / 60 / 3);
+        if (income <= 0) return;
+
+        set((state) => ({
+          balance: state.balance + income,
+        }));
+      }, 20000); // каждые 10 сек
+
+      set({ passiveInterval: interval });
+    },
+
+    stopPassiveIncome: () => {
+      const interval = get().passiveInterval;
+      if (interval) {
+        clearInterval(interval);
+        set({ passiveInterval: null });
+      }
+    },
+
+    applyOfflineIncome: () => {
+      const { lastActiveAt, passiveIncome, balance } = get();
+
+      if (!lastActiveAt || passiveIncome <= 0) return;
+
+      const now = Date.now();
+      const diffMs = now - lastActiveAt;
+
+      const maxAfkMs = 3 * 60 * 60 * 1000; // 3 часа
+      const effectiveMs = Math.min(diffMs, maxAfkMs);
+
+      const seconds = Math.floor(effectiveMs / 1000);
+      const income = Math.floor((passiveIncome / 3600) * seconds);
+
+      if (income > 0) {
+        set({ balance: balance + income });
+      }
+
+      set({ lastActiveAt: now });
+    },
+
+    startPassiveIncome: () => {
+      setInterval(() => {
+        const { passiveIncome, balance } = get();
+        if (passiveIncome <= 0) return;
+
+        set({ balance: Math.round(balance + passiveIncome / 180) });
+      }, 20000); // раз в секунду
+    },
+
+    saveLastActive: () => {
+      const state = get();
+
+      localStorage.setItem(
+        "planetup-save",
+        JSON.stringify({
+          balance: state.balance,
+          energy: state.energy,
+          maxEnergy: state.maxEnergy,
+          currentLevel: state.currentLevel,
+          currentLevelProgress: state.currentLevelProgress,
+          upgradesLevels: state.upgradesLevels,
+          passiveIncome: state.passiveIncome,
+          currentPlanet: state.currentPlanet,
+          lastActiveAt: Date.now(),
+        })
+      );
+    },
+
+    saveGame: () => {
+      const state = get();
+
+      const data = {
+        balance: state.balance,
+        energy: state.energy,
+        currentLevel: state.currentLevel,
+        currentLevelProgress: state.currentLevelProgress,
+        upgradesLevels: state.upgradesLevels,
+        passiveIncome: state.passiveIncome,
+        currentPlanet: state.currentPlanet,
+        lastActiveAt: state.lastActiveAt,
+      };
+
+      localStorage.setItem("planetup-save", JSON.stringify(data));
+    },
+
+    loadGame: () => {
+      const raw = localStorage.getItem("planetup-save");
+      if (!raw) return;
+
+      try {
+        const data = JSON.parse(raw);
+
+        set({
+          balance: data.balance ?? 0,
+          energy: data.energy ?? 500,
+          currentLevel: data.currentLevel ?? 1,
+          currentLevelProgress: data.currentLevelProgress ?? 0,
+          upgradesLevels: data.upgradesLevels ?? {},
+          passiveIncome: data.passiveIncome ?? 0,
+          currentPlanet: data.currentPlanet ?? "earth",
+          lastActiveAt: data.lastActiveAt ?? Date.now(),
+        });
+      } catch {
+        console.error("Save broken");
+      }
     },
   };
 });

@@ -7,10 +7,37 @@ import LoadingScreen from "./pages/LoadingScreen";
 import { Route, Routes, useLocation } from "react-router";
 import { AnimatePresence, motion } from "motion/react";
 import PageWrapper from "./components/UI/PageWrapper";
+import { useEffect } from "react";
 
 function App() {
   const isLoading = useGameStore((s) => s.isLoading);
   const location = useLocation();
+
+  const startPassiveIncome = useGameStore((s) => s.startPassiveIncome);
+
+  useEffect(() => {
+    const store = useGameStore.getState();
+
+    store.loadGame(); // загрузка
+    store.applyOfflineIncome(); // AFK доход
+    store.startPassiveIncome(); // онлайн доход
+
+    setInterval(() => {
+      store.restoreEnergy();
+    }, 1300);
+
+    const save = () => store.saveLastActive();
+
+    window.addEventListener("beforeunload", save);
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) save();
+    });
+
+    return () => {
+      window.removeEventListener("beforeunload", save);
+    };
+  }, []);
 
   return (
     <div className="main-page">

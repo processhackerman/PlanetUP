@@ -39,10 +39,11 @@ export default function ShopTab({ category }) {
         }
 
         const currentCardLevel = levels[item.id] || 0;
-        let status = "available";
+        let status = "";
 
         if (currentCardLevel >= item.maxLevel) status = "max";
         else if (playerLevel < item.unlockLevel) status = "locked";
+        else if (currentCardLevel === 0) status = "available";
         else status = "upgradeable";
 
         const cardPrice =
