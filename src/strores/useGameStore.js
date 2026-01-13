@@ -4,14 +4,14 @@ import { getUpgradeCost, getUpgradePower } from "../utils/upgradeMath";
 
 const useGameStore = create((set, get) => {
   return {
-    balance: 250,
+    balance: 0,
     energy: 500,
     maxEnergy: 500,
     currentLevelProgress: 0,
     clickPower: 1,
-    passiveIncome: 1000,
+    passiveIncome: 0,
     isLoading: true,
-    currentLevel: 3,
+    currentLevel: 1,
     incomeMultiplier: 1,
     critBoostActive: false,
     currentSkinId: "skin_1",
